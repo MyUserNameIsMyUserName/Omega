@@ -1,9 +1,9 @@
 
-function loadDocument(template_url, parent_id, var_names, getting_data="") {
+function loadDocument(template_url, parent_id, var_names="", getting_data="") {
     document.querySelector("#"+parent_id).innerHTML = getViewTemplate(template_url).replace("[<"+var_names+">]", getDataForTemplate(getting_data));
 };
 
-function postToDocument(template_url, parent_id, var_names, sending_data="") {
+function postToDocument(template_url, parent_id, var_names="", sending_data="") {
     document.querySelector("#"+parent_id).innerHTML = getViewTemplate(template_url).replace("[<"+var_names+">]", sendDataForTemplate(sending_data));
 };
 
