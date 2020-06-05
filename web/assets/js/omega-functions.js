@@ -1,31 +1,18 @@
 
 function loadDocument(template_url, parent_id, var_names="", getting_data="") {
-    document.querySelector("#"+parent_id).innerHTML = getViewTemplate(template_url).replace("[<"+var_names+">]", getDataForTemplate(getting_data));
+    document.querySelector("#"+parent_id).innerHTML = fetchSyncUrl(template_url).replace("[<"+var_names+">]", fetchSyncUrl(api_location, getting_data));
 };
 
 function postToDocument(template_url, parent_id, var_names="", sending_data="") {
-    document.querySelector("#"+parent_id).innerHTML = getViewTemplate(template_url).replace("[<"+var_names+">]", sendDataForTemplate(sending_data));
-};
-
-function getViewTemplate(template_url){
-    return fetchSyncUrl(template_url);
-};
-
-function getDataForTemplate(getting_data){
-    return fetchSyncUrl(api_location, getting_data);
-};
-
-function sendDataForTemplate(sending_data){
-    return sendSyncUrl(api_location,sending_data);
+    document.querySelector("#"+parent_id).innerHTML = fetchSyncUrl(template_url).replace("[<"+var_names+">]", sendSyncUrl(api_location,sending_data));
 };
 
 function fetchSyncUrl(url, data = ""){
     var request = new XMLHttpRequest();
     if (data !== ""){
-        request.open('GET', url+'?'+data, false);
-    } else {
-        request.open('GET', url, false);
+        url = url+'?'+data;
     };
+    request.open('GET', url, false);
     request.send();
     
     if (request.status === 200) {
