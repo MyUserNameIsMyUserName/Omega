@@ -1,10 +1,16 @@
 
 function loadDocument(template_url, parent_id, var_names="", getting_data="") {
-    document.querySelector("#"+parent_id).innerHTML = fetchSyncUrl(template_url).replace("[<"+var_names+">]", fetchSyncUrl(api_location, getting_data));
+    var elementHelper = fetchSyncUrl(template_url).replace("[<"+var_names+">]", fetchSyncUrl(api_location, getting_data));
+    var unique_element_id = Math.random().toString(36).substr(2, 9);
+    elementHelper = elementHelper.split('[<unique_element_id>]').join("omega_id_"+unique_element_id)
+    document.querySelector("#"+parent_id).innerHTML = elementHelper;
 };
 
 function postToDocument(template_url, parent_id, var_names="", sending_data="") {
-    document.querySelector("#"+parent_id).innerHTML = fetchSyncUrl(template_url).replace("[<"+var_names+">]", sendSyncUrl(api_location,sending_data));
+    var elementHelper = fetchSyncUrl(template_url).replace("[<"+var_names+">]", sendSyncUrl(api_location,sending_data));
+    var unique_element_id = Math.random().toString(36).substr(2, 9);
+    elementHelper = elementHelper.split('[<unique_element_id>]').join("omega_id_"+unique_element_id)
+    document.querySelector("#"+parent_id).innerHTML = elementHelper;
 };
 
 function fetchSyncUrl(url, data = ""){
