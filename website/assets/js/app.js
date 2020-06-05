@@ -22,9 +22,6 @@ function fetchSyncUrl(url){
     request.send(null);
     
     if (request.status === 200) {
-        if (sys_debug == true){
-            console.log(request.responseText);
-        }
         return request.responseText;
     }
 };
