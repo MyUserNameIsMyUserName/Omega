@@ -1,4 +1,5 @@
 function omega(req_type, template_url, parent_id, var_names="", getting_data="") {
+    template_url = components_location + template_url + "/index.html";
     var elementHelper = omegaFetchUrl("GET", template_url ).replace("[<"+var_names+">]", omegaFetchUrl(req_type, api_location, getting_data));
     var unique_element_id = Math.random().toString(36).substr(2, 9);
     elementHelper = elementHelper.split('[<unique_element_id>]').join("omega_id_"+unique_element_id)
