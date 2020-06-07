@@ -66,3 +66,21 @@ document.addEventListener('DOMContentLoaded', function(event) {
         "demo_text_to_replace"
         );
 });
+
+document.addEventListener('DOMContentLoaded', function(event) {
+    omegaGet(
+        "web/templates/aliases_template.html",
+        "some_container_id2Ali",
+        "demo_text_to_replace",
+        "moduleName=users"
+        );
+});
+
+document.addEventListener('DOMContentLoaded', function(event) {
+    omegaPost(
+        "web/templates/aliases_template.html",
+        "some_posting_containerAli",
+        "demo_text_to_replace",
+        "moduleName=access_tokens"
+        );
+});

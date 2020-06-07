@@ -5,6 +5,14 @@ function omega(req_type, template_url, parent_id, var_names="", getting_data="")
     document.querySelector("#"+parent_id).innerHTML = elementHelper;
 };
 
+function omegaGet(template_url, parent_id, var_names="", getting_data=""){
+    omega("GET", template_url, parent_id, var_names, getting_data);
+}
+
+function omegaPost(template_url, parent_id, var_names="", getting_data=""){
+    omega("POST", template_url, parent_id, var_names, getting_data);
+}
+
 function omegaFetchUrl(req_type, url, data = ""){
     var request = new XMLHttpRequest();
     if (req_type.toUpperCase() == "GET"){
