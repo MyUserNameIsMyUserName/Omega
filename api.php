@@ -38,6 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 function echoJsonDemo(){
-    $data = [ 'demo_text_to_replace' => 'God', 'second_variable' => -1 , "yeaaa_variable" => "yeaaaaaValue"];
+    $data = [ 
+        'demo_text_to_replace' => [
+                            ["id" => 1, "title" => 'title'],
+                            ["id" => 2, "title" => 'title2'],
+                            ["id" => 3, "title" => 'title22'],
+                            ],
+        'second_variable' => -1 ,
+        "yeaaa_variable" => "yeaaaaaValue"];
     echo json_encode( $data );
 }

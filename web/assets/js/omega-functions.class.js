@@ -14,6 +14,17 @@ class omegaRequestClass {
         var elementHelperData = JSON.parse(this.omegaFetchUrl(this.req_type, omegaConfig.api_location));
         this.var_names.forEach(function(entry) {
             elementHelperTemplate = elementHelperTemplate.split('[<'+entry+'>]').join(elementHelperData[entry]);
+            if (typeof(elementHelperData[entry]) == 'object'){
+                //console.log(Object.keys(elementHelperData[entry]).length);
+                elementHelperData[entry].forEach(function(en){
+                    //console.log(en);
+                    Object.keys(en).forEach(function(key) {
+
+                        console.log(key, en[key]);
+                      
+                      });
+                })
+            }
         });
         var unique_element_id = Math.random().toString(36).substr(2, 9);
         elementHelperTemplate = elementHelperTemplate.split('[<unique_element_id>]').join("omega_id_"+unique_element_id)
@@ -50,6 +61,9 @@ class omegaRequestClass {
         };
     };
 
+    omegaLoopVariables(){
+        
+    }
 };
 
 function omegaRequest(req_type, template_url, parent_id, var_names="", getting_data=""){
