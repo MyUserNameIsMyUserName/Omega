@@ -7,7 +7,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             switch ($_POST['moduleName']) {
                 case "users":
-                    echo "POST moduleName is users!";
+                    //echo "POST moduleName is users!";
+                    if (empty($_POST["functionName"])){
+                        echo "POST functionName is empty!";
+                    } else {
+                        switch ($_POST["functionName"]) {
+                            case "getUserInfo":
+                                //echo "functionName is getUserInfo";
+                                echoJsonDemo();
+                        }
+                    }
                     break;
                 case "access_tokens":
                     include "api/access_tokens/functions.php";
@@ -25,4 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     echo "missing request method";
+}
+
+
+function echoJsonDemo(){
+    $data = [ 'demo_text_to_replace' => 'God', 'second_variable' => -1 , "yeaaa_variable" => "yeaaaaaValue"];
+    echo json_encode( $data );
 }
