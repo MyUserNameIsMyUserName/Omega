@@ -115,6 +115,7 @@ if (defined("OMEGA_INSTALL_DEBUG") == true){
   echo "DEEEEBUG";
   if(file_exists($configSampleFile)){
     rename($configSampleFile,".".$configSampleFile);
+    rename(".".$configSampleFile,$configSampleFile);
   }else{
     echo 'file not found';
   }
@@ -134,4 +135,23 @@ function replaceValues($configSample, $name, $username, $password, $host) {
   $configSample = str_replace("[>DB_HOST<]",$host, $configSample);
   return $configSample;
 }
-?>
+
+if(file_exists('config.php')){
+  include_once 'config.php';
+} else {
+  echo "Missing Config.php";
+}
+if (file_exists('users/install.php')){
+  include_once 'users/install.php';
+  installUsers();
+  if (defined("OMEGA_INSTALL_DEBUG") == true){
+    rename('users/install.php', 'users/.install.php');
+    rename('users/.install.php', 'users/install.php');
+  } else {
+    unlink('users/install.php');
+  }
+} else {
+  echo "Missing <strong>Users</strong\>module install file!";
+}
+
+

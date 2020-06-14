@@ -1,4 +1,5 @@
 <?php
+define( "OMEGA_LOC" , "Snksaoo1239!-5XX");
 
 define("DB_NAME","[>DB_NAME<]");
 define("DB_USER","[>DB_USER<]");
