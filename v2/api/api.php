@@ -1,5 +1,5 @@
 <?php
-define( "OMEGA_LOC" , "Snksaoo1239!-5XX");
+require_once 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST['moduleName'])) {
