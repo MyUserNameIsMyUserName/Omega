@@ -1,4 +1,4 @@
-var api_location = "http://localhost/Omega/v1/api.php";
+var api_location = "http://localhost:8080/Omega/api.php";
 var components_location = "web/components/";
 
 document.addEventListener('DOMContentLoaded', function(event) {

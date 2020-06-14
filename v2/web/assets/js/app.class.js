@@ -1,5 +1,5 @@
 var omegaConfig = {
-    "api_location" : "http://localhost/Omega/v1/api.php",
+    "api_location" : "http://localhost:8080/Omega/api.php",
     "components_location" : "web/components/"
 }
 
