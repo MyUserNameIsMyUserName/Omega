@@ -19,8 +19,10 @@ $installResult = "";
 <style>
 .error {color: #FF0000;}
 </style>
+<link rel="stylesheet" media="all" href="install/install.css" id="install-style">
+<script type="text/javascript" src="install/install.js"  id="install-js"></script>
 </head>
-<body>  
+<body class="dark">  
 
 <?php
 // define variables and set to empty values
@@ -149,7 +151,7 @@ if (($_SERVER["REQUEST_METHOD"] == "GET") || ($postError > 0)) {
 ?>
 
 <div class="install-section">
-<h2>PHP Form Validation Example</h2>
+<h2>Omega Install Settings</h2>
 <p><span class="error">* required field</span></p>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <div class="input-sec">  
@@ -255,81 +257,7 @@ function saveInstalledApiModule($module_name, $module_folder){
 ?>
 
 <style>
-  body{
-    background: #555555;
-    color: whitesmoke;
-    font-family: monospace;
-  }
-  .install-section{
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 30px;
-    background: #272727;
-  }
-  .install-message  {
-    padding: 5px 10px;
-    font-size: 20px;
-    font-weight: 400;
-    margin: 5px 0px;
-  }
-  .success {
-    background: green;
-    border-left: 5px solid darkgreen;
-    color: white;
-  }
-  .error {
-    background: red;
-    border-left: 5px solid darkred;
-    color: white;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    font-size: 20px;
-  }
-
-  .input-sec {
-    display: flex;
-    flex-direction: row;
-    place-content: space-between;
-    margin: 5px 0;
-  }
-  .input-sec > div {
-    min-width: 50%;
-    display: flex;
-    flex-direction: row;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    padding: 5px 10px;
-    background: black;
-    border: none;
-    border-bottom: 2px solid green;
-    font-size: 18px;
-    font-weight: 400; 
-    color: white;
-  }
-
-  .input-sec .error {
-    background: none;
-    border: none;
-    color: red;
-    margin-left: -15px;
-  }
-  form input[type=submit] {
-    background: green;
-    border: none;
-    padding: 10px 20px;
-    width: fit-content;
-    color: white;
-    font-size: 20px;
-    letter-spacing: 1px;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
+  
 </style>
 </body>
 </html>
