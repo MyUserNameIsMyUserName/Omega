@@ -2,9 +2,15 @@
 
 //DEFINE INSTALL DEBUG
 ## SHOULD DISABLE ONCE INSTALL DEVELOPMENT IS DONE
-//define("OMEGA_INSTALL_DEBUG", true);
+define("OMEGA_INSTALL_DEBUG", true);
 //
 
+
+
+
+////////
+
+$installResult = "";
 ?>
 
 <!DOCTYPE HTML>  
@@ -94,28 +100,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
   if(file_exists('config.php')){
-    include_once 'config.php';
-    echo "<div class='install-message success'>Loaded Config.php</div>";
+    include_once ('config.php');
+    echo "<div class='install-message success'>Existing Config.php</div>";
+    
+    echo "<hr><h2> Modules install </h2>";
+    if(file_exists('system_status/install.php')){
+      include_once ('system_status/install.php');
+      echo installApiModule('Omega System Status', 'system_status');
+    } else {
+      echo "<div class='install-message error'>[System Status] Missing system_status/install.php</div>";
+    }
+    if(file_exists('users/install.php')){
+      include_once ('users/install.php');
+      echo installApiModule('Omega Users', 'users');
+    } else {
+      echo "<div class='install-message error'>[Users] Missing users/install.php</div>";
+    }
   } else {
     echo "<div class='install-message error'>Missing Config.php</div>";
   }
-  echo installApiModule('Omega Users Module', 'users');
-  /*if (file_exists('users/install.php')){
-    include_once 'users/install.php';
-    echo "<h2 class='sectionTitle'>Users table create:</h2>". installUsers();
-    if (defined("OMEGA_INSTALL_DEBUG") == true){
-      rename('users/install.php', 'users/.install.php');
-      rename('users/.install.php', 'users/install.php');
-      echo "<div class='install-message success'>users/install.php deleted</div>";
-    } else {
-      unlink('users/install.php');
-      echo "<div class='install-message success'>users/install.php deleted</div>";
-    }
-  } else {
-    echo "Missing <strong>users/install.php</strong\>module install file!";
-  }
-  //close section for results
-*/
   
   if (defined("OMEGA_INSTALL_DEBUG") == true) {
     echo "<h2>Database config results:</h2> ";
@@ -195,8 +198,7 @@ function replaceValues($configSample, $name, $username, $password, $host) {
 
 function installApiModule($module_name, $module_folder) {
   $installResult = "";
-  if (file_exists($module_folder.'/install.php')){
-    include ($module_folder.'/install.php');
+  if (file_exists($module_folder.'/install.php')){  
     if (defined("OMEGA_INSTALL_DEBUG") == true){
       rename($module_folder.'/install.php', $module_folder.'/.install.php');
       rename($module_folder.'/.install.php', $module_folder.'/install.php');
@@ -220,7 +222,7 @@ function installOmegaConfigTables(){
     }
 
     // sql to create table
-    $sql = "CREATE TABLE omega_modules (
+    $sql = "CREATE TABLE ".$table_prefix."modules (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     module_name VARCHAR(30),
     installed_by VARCHAR(30),
@@ -228,9 +230,9 @@ function installOmegaConfigTables(){
     )";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Table omega_modules created successfully";
+        echo "Table ".$table_prefix."modules created successfully";
     } else {
-        echo "Error creating table omega_modules: " . $conn->error;
+        echo "Error creating table ".$table_prefix."modules: " . $conn->error;
     }
 
     $conn->close();

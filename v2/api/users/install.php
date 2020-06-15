@@ -10,7 +10,7 @@ if ( ! defined( 'OMEGA_LOC' ) ) exit;
     }
 
     // sql to create table
-    $sql = "CREATE TABLE omega_users (
+    $sql = "CREATE TABLE ". $table_prefix ."users (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(30) NOT NULL,
     lastname VARCHAR(30) NOT NULL,
@@ -20,9 +20,9 @@ if ( ! defined( 'OMEGA_LOC' ) ) exit;
     )";
 
     if ($conn->query($sql) === TRUE) {
-        $installResult = $installResult . "<div class='install-message success'>Table omega_users created successfully</div>";
+        echo "<div class='install-message success'>Table omega_users created successfully</div>";
     } else {
-        $installResult = $installResult . "<div class='install-message error'>Error creating table: " . $conn->error . "</div>";
+        echo "<div class='install-message error'>Error creating table: " . $conn->error . "</div>";
     }
 
     $conn->close();
