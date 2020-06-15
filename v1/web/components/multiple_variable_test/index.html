@@ -1,8 +1,8 @@
 <div class="website_container " id="[<unique_element_id>]" onclick="customYEA()">
     <h2>Demo Template Title of [<unique_element_id>] element</h2>
-    <div class="website_content">
-        This is some static text before going to - <strong>[<demo_text_to_replace>]</strong>
-    </div>
+    <loop:demo_text_to_replace class="website_content">
+        This is some static text before going to - <strong>[<id>]</strong> - <strong>[<title>]</strong>
+        </loop:demo_text_to_replace/>
     <div class="website_content">
         SECOND VARIABLE DEMO - <strong>[<second_variable>]</strong>
     </div>

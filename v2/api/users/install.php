@@ -2,7 +2,6 @@
 //Block direct access to file
 if ( ! defined( 'OMEGA_LOC' ) ) exit;
 
-function installUsers(){
     // Create connection
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     // Check connection
@@ -16,15 +15,14 @@ function installUsers(){
     firstname VARCHAR(30) NOT NULL,
     lastname VARCHAR(30) NOT NULL,
     email VARCHAR(50),
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
 
     if ($conn->query($sql) === TRUE) {
-        return "<div class='install-message success'>Table omega_users created successfully</div>";
+        $installResult = $installResult . "<div class='install-message success'>Table omega_users created successfully</div>";
     } else {
-        return "<div class='install-message error'>Error creating table: " . $conn->error . "</div>";
+        $installResult = $installResult . "<div class='install-message error'>Error creating table: " . $conn->error . "</div>";
     }
 
     $conn->close();
-}
-?>

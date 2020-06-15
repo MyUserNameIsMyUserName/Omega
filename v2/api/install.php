@@ -2,7 +2,7 @@
 
 //DEFINE INSTALL DEBUG
 ## SHOULD DISABLE ONCE INSTALL DEVELOPMENT IS DONE
-define("OMEGA_INSTALL_DEBUG", true);
+//define("OMEGA_INSTALL_DEBUG", true);
 //
 
 ?>
@@ -18,6 +18,7 @@ define("OMEGA_INSTALL_DEBUG", true);
 
 <?php
 // define variables and set to empty values
+$postError = 0;
 $nameErr = $usernameErr = $passwordErr = $hostErr = "";
 $name = $username = $password = $host = "";
 
@@ -30,28 +31,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (empty($_POST["name"])) {
     $nameErr = "Name is required";
+    $postError = $postError + 1;
   } else {
     $name = test_input($_POST["name"]);
   }
   
   if (empty($_POST["username"])) {
     $usernameErr = "username is required";
+    $postError = $postError + 1;
   } else {
     $username = test_input($_POST["username"]);
   }
   
   if (empty($_POST["password"])) {
     $passwordErr = "password is required";
+    $postError = $postError + 1;
   } else {
     $password = test_input($_POST["password"]);
   }
   
   if (empty($_POST["host"])) {
     $hostErr = "host is required";
+    $postError = $postError + 1;
   } else {
     $host = test_input($_POST["host"]);
   }
-
+ if ($postError == 0){
   echo '<h2 class="sectionTitle">Config generate/delete</h2> '; 
   $configSampleFile = "config-sample.php";
   if(file_exists($configSampleFile)){
@@ -62,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $configFile = fopen("config.php", "w") or die("Unable to open file!");
     fwrite($configFile, $configSample);
     fclose($configFile);
-    echo "<div class='install-message success'>Create config.php file</div>";
+    echo "<div class='install-message success'>Created config.php file</div>";
   }else{
     echo "<div class='install-message error'>Missing config-sample.php file</div>";
   }
@@ -78,7 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   } else {
     if(file_exists($configSampleFile)){
-      unlink($configSampleFile);
+      //unlink($configSampleFile);
+      rename($configSampleFile,".".$configSampleFile);
       echo "<div class='install-message success'>config-sample.php deleted</div>";
     }else{
       echo "<div class='install-message error'>config-sample.php not found</div>";
@@ -89,10 +95,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if(file_exists('config.php')){
     include_once 'config.php';
+    echo "<div class='install-message success'>Loaded Config.php</div>";
   } else {
-    echo "Missing Config.php";
+    echo "<div class='install-message error'>Missing Config.php</div>";
   }
-  if (file_exists('users/install.php')){
+  echo installApiModule('Omega Users Module', 'users');
+  /*if (file_exists('users/install.php')){
     include_once 'users/install.php';
     echo "<h2 class='sectionTitle'>Users table create:</h2>". installUsers();
     if (defined("OMEGA_INSTALL_DEBUG") == true){
@@ -107,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "Missing <strong>users/install.php</strong\>module install file!";
   }
   //close section for results
-
+*/
   
   if (defined("OMEGA_INSTALL_DEBUG") == true) {
     echo "<h2>Database config results:</h2> ";
@@ -123,6 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   echo '</div>';
 
 }
+}
 
 function test_input($data) {
   $data = trim($data);
@@ -132,7 +141,7 @@ function test_input($data) {
 }
 
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if (($_SERVER["REQUEST_METHOD"] == "GET") || ($postError > 0)) {
   
 ?>
 
@@ -184,11 +193,52 @@ function replaceValues($configSample, $name, $username, $password, $host) {
 }
 
 
+function installApiModule($module_name, $module_folder) {
+  $installResult = "";
+  if (file_exists($module_folder.'/install.php')){
+    include ($module_folder.'/install.php');
+    if (defined("OMEGA_INSTALL_DEBUG") == true){
+      rename($module_folder.'/install.php', $module_folder.'/.install.php');
+      rename($module_folder.'/.install.php', $module_folder.'/install.php');
+      $installResult = $installResult."<div class='install-message success'>[".$module_name."] > ".$module_folder."/install.php deleted</div>";
+    } else {
+      //unlink($module_folder.'/install.php');
+      rename($module_folder.'/install.php', $module_folder.'/.install.php');
+      $installResult = $installResult."<div class='install-message success'>[".$module_name."] > ".$module_folder."/install.php deleted</div>";
+    }
+  } else {
+    $installResult = "<div class='install-message error'>Missing <strong>".$module_name."</strong\> module install file!</div>";
+  }
+  return $installResult;
+}
 
+function installOmegaConfigTables(){
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
 
+    // sql to create table
+    $sql = "CREATE TABLE omega_modules (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    module_name VARCHAR(30),
+    installed_by VARCHAR(30),
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )";
 
+    if ($conn->query($sql) === TRUE) {
+        echo "Table omega_modules created successfully";
+    } else {
+        echo "Error creating table omega_modules: " . $conn->error;
+    }
 
+    $conn->close();
+}
 
+function saveInstalledApiModule($module_name, $module_folder){
+
+}
 
 
 
@@ -258,6 +308,7 @@ function replaceValues($configSample, $name, $username, $password, $host) {
     border-bottom: 2px solid green;
     font-size: 18px;
     font-weight: 400; 
+    color: white;
   }
 
   .input-sec .error {

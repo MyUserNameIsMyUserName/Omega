@@ -1,5 +1,5 @@
 var omegaConfig = {
-    "api_location" : "http://localhost:8080/Omega/api.php",
+    "api_location" : "http://localhost:8000/Omega/api.php",
     "components_location" : "web/components/"
 }
 
@@ -7,7 +7,6 @@ var omegaRequestInfo = {
     "req_type"          :   "post",
     "template_name"     :   "multiple_variable_test",
     "parent_element_id" :   "performance_meter_container_id",
-    "var_names"         :   ["demo_text_to_replace", "second_variable", "yeaaa_variable"],
     "req_data"          :   {
                                 "moduleName"    :    "users",
                                 "functionName"  :    "getUserInfo",
