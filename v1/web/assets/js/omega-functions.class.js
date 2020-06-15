@@ -12,7 +12,38 @@ class omegaRequestClass {
         this.template_name = omegaConfig.components_location + this.template_name + "/index.html";
         var elementHelperTemplate = this.omegaFetchUrl("GET", this.template_name );
         var elementHelperData = JSON.parse(this.omegaFetchUrl(this.req_type, omegaConfig.api_location));
-        this.var_names.forEach(function(entry) {
+        var i,x = "";
+        for (i in elementHelperData) {
+            if (typeof(elementHelperData[i]) == 'object'){
+                var loopString = "";
+                var n = elementHelperTemplate.indexOf("<loop:"+ i) ;
+                var n2 = elementHelperTemplate.indexOf("</loop:"+ i ) - n + ("</loop:"+ i +"/>").length;
+                var helper = elementHelperTemplate.substr(n, n2);
+                //console.log(helper);
+                console.log('i vrednosti: ', i, elementHelperData[i]);
+                if (typeof(elementHelperData[i]) == 'object'){
+                    var k = "";
+                    for (k in elementHelperData[i]){
+                        console.log('k vrednosti: ', k, elementHelperData[i][k]);
+                        var j = "";
+                        loopString += helper.split('[<'+k+'>]').join(elementHelperData[i][k]);
+                        for (j in elementHelperData[i][k]){
+                            console.log('J vrednosti: ', j, elementHelperData[i][k][j]);
+                            loopString = loopString.split('[<'+j+'>]').join(elementHelperData[i][k][j]);
+                            //console.log(loopString);
+                            loopString = loopString.split('<loop:'+ i).join("<div");
+                            loopString = loopString.split('</loop:'+ i +'/>').join("</div>");
+                        }
+                        elementHelperTemplate = elementHelperTemplate.substr(0, n) + loopString + elementHelperTemplate.substr(n2, elementHelperTemplate.length - n2);
+                    };
+                }
+            } else {
+                //x += i + "  " + elementHelperData[i] + "<br>"; 
+                elementHelperTemplate = elementHelperTemplate.split('[<'+i+'>]').join(elementHelperData[i]);
+            }
+        }
+        console.log(x);
+        /*elementHelperData.forEach(function(entry) {
             elementHelperTemplate = elementHelperTemplate.split('[<'+entry+'>]').join(elementHelperData[entry]);
             if (typeof(elementHelperData[entry]) == 'object'){
                 //console.log(Object.keys(elementHelperData[entry]).length);
@@ -25,7 +56,7 @@ class omegaRequestClass {
                       });
                 })
             }
-        });
+        });*/
         var unique_element_id = Math.random().toString(36).substr(2, 9);
         elementHelperTemplate = elementHelperTemplate.split('[<unique_element_id>]').join("omega_id_"+unique_element_id)
         document.querySelector("#"+this.parent_element_id).innerHTML = elementHelperTemplate;
