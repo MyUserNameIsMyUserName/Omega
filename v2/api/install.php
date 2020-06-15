@@ -187,8 +187,57 @@ function replaceValues($configSample, $name, $username, $password, $host) {
 
 
 
+if(file_exists('config.php')){
+  include_once 'config.php';
+} else {
+  echo "Missing Config.php";
+}
 
 
+function installApiModule($module_name, $module_folder) {
+  if (file_exists($module_folder.'/install.php')){
+    include_once $module_folder.'/install.php';
+    installUsers();
+    if (defined("OMEGA_INSTALL_DEBUG") == true){
+      rename($module_folder.'/install.php', $module_folder.'/.install.php');
+      rename($module_folder.'/.install.php', $module_folder.'/install.php');
+      return "[debug]Module install success!" ;
+    } else {
+      unlink($module_folder.'/install.php');
+      return "Module install success!";
+    }
+  } else {
+    return "Missing <strong>".$module_name."</strong\> module install file!";
+  }
+}
+
+function installOmegaConfigTables(){
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+
+    // sql to create table
+    $sql = "CREATE TABLE omega_modules (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    module_name VARCHAR(30),
+    installed_by VARCHAR(30),
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Table omega_modules created successfully";
+    } else {
+        echo "Error creating table omega_modules: " . $conn->error;
+    }
+
+    $conn->close();
+}
+
+function saveInstalledApiModule($module_name, $module_folder){
+
+}
 
 
 
@@ -258,6 +307,7 @@ function replaceValues($configSample, $name, $username, $password, $host) {
     border-bottom: 2px solid green;
     font-size: 18px;
     font-weight: 400; 
+    color: white;
   }
 
   .input-sec .error {
